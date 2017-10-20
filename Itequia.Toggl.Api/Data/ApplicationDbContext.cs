@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Itequia.Toggl.Api.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Itequia.Toggl.Api.Data
 {
@@ -8,5 +9,9 @@ namespace Itequia.Toggl.Api.Data
             : base(options)
         {
         }
+
+        public DbSet<Project> Projects { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Record> Records { get; set; }
     }
 }
