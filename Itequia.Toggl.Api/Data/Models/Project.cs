@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 
 namespace Itequia.Toggl.Api.Data.Models
 {
-    public class Project
+    public class Project : BaseModel
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Status { get; set; }
     }
