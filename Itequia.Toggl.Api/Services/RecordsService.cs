@@ -27,18 +27,21 @@ namespace Itequia.Toggl.Api.Services
         }
 
         public int Delete(int id)
-        {
-            
+        {            
              _baseRepository.Delete(id);
-             return id;
-             
+             return id;             
         }
 
         public Record Post(Record record)
         {
             _baseRepository.Create(record);
+            return record;            
+        }
+
+        public Record Put(int id, Record record)
+        { 
+            _baseRepository.Update(record);
             return record;
-            
         }
 
         public int Patch(int id, Record record)

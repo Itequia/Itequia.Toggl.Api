@@ -20,9 +20,7 @@ namespace Itequia.Toggl.Api.Services
         public List<Project> Get()
         {
             return _baseRepository.GetAll().ToList();
-        }
-
-       
+        }       
     }
 }
 
