@@ -9,6 +9,12 @@ namespace Itequia.Toggl.Api.Data.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Status { get; set; }
+        public Status Status { get; set; }
+    }
+
+    public enum Status
+    {
+        Inactive,
+        Active
     }
 }
