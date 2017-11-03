@@ -11,32 +11,36 @@ namespace Itequia.Toggl.Api.Services
     public class RecordsService : IRecordsService
     {
         private readonly IBaseRepository<Record> _baseRepository;
+
         public RecordsService(IBaseRepository<Record> repository)
         {
             _baseRepository = repository;
         }
         public List<Record> Get()
         {
-            return _baseRepository.GetAll().ToList();
+            return _baseRepository.GetAll().ToList();    
         }
 
         public Record Get(int id)
         {
-            return _baseRepository.Get(id);
+            return _baseRepository.Get(id);  
         }
 
         public int Delete(int id)
         {
-            _baseRepository.Delete(id);
-            return id;
+            
+             _baseRepository.Delete(id);
+             return id;
+             
         }
 
         public Record Post(Record record)
         {
             _baseRepository.Create(record);
             return record;
-
+            
         }
+
         public int Patch(int id, Record record)
         {
             _baseRepository.Update(record);
