@@ -10,6 +10,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Itequia.Toggl.Api.Data;
 using Microsoft.EntityFrameworkCore;
+using Itequia.Toggl.Api.Services.Interfaces;
+using Itequia.Toggl.Api.Services;
 
 namespace Itequia.Toggl.Api
 {
@@ -27,6 +29,9 @@ namespace Itequia.Toggl.Api
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<IProjectsService, ProjectsService>();
+            services.AddScoped<IRecordsService, RecordsService>();
 
             services.AddMvc();
         }
