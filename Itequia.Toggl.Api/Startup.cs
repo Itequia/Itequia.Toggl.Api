@@ -28,17 +28,41 @@ namespace Itequia.Toggl.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                {
+                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                    options.UseOpenIddict();
+                });
 
             services.AddScoped<IProjectsService, ProjectsService>();
             services.AddScoped<IRecordsService, RecordsService>();
 
             services.AddMvc();
+
+            //services.AddIdentity<ApplicationUser, IdentityRole>()
+            //    .AddEntityFrameworkStores<ApplicationDbContext>()
+            //    .AddDefaultTokenProviders();
+
+            services.AddAuthentication()
+                    .AddOAuthValidation();
+
+            services.AddOpenIddict(options =>
+            {
+                options.AddEntityFrameworkCoreStores<ApplicationDbContext>();
+                options.AddMvcBinders();
+                options.EnableTokenEndpoint("/connect/token");
+                options.AllowPasswordFlow();
+                options.DisableHttpsRequirement();
+            });
+            //TO CONTINUE
+            //https://github.com/openiddict/openiddict-core
+            //https://github.com/openiddict/openiddict-samples/blob/dev/samples/CodeFlow/AuthorizationServer/Startup.cs
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseAuthentication();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
