@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 
 namespace Itequia.Toggl.Api.Data.Models
 {
-    public class Record
+    public class Record : BaseModel
     {
-        public int Id { get; set; }
         public string Description { get; set; }
         public DateTime Start { get; set; }
         public DateTime? End { get; set; }
