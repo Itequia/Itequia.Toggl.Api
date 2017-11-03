@@ -9,5 +9,7 @@ namespace Itequia.Toggl.Api.Services.Interfaces
     public interface IProjectsService
     {
         List<Project> Get();
+
+        
     }
 }
