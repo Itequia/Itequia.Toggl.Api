@@ -56,7 +56,9 @@ namespace Itequia.Toggl.Api
 
         private void InitializeAutoMapper()
         {
-            Mapper.Initialize(cfg => cfg.CreateMap<Record, RecordDTO>());
+            Mapper.Initialize(cfg => cfg.CreateMap<Record, RecordDTO>()
+                                        .ReverseMap()
+                             );
         }
     }
 }

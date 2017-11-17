@@ -26,36 +26,7 @@ namespace Itequia.Toggl.Api.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            List<Record> test = new List<Record>()
-            {
-                new Record()
-                {
-                    Description = "Desc1",
-                    Start = new DateTime(2017,1,1),
-                    End = new DateTime(),
-                    ProjectId = 1,
-                    UserId = 1
-                },
-                new Record()
-                {
-                    Description = "Desc2",
-                    Start = new DateTime(2017,1,2),
-                    End = new DateTime(),
-                    ProjectId = 2,
-                    UserId = 2
-                },
-                new Record()
-                {
-                    Description = "Desc3",
-                    Start = new DateTime(2017,1,3),
-                    ProjectId = 3,
-                    UserId = 3
-                }
-
-            };
-
-            List<RecordDTO> result = Mapper.Map<List<Record>, List<RecordDTO>>(_service.Get());
-            return new OkObjectResult(result);
+            return new OkObjectResult(Mapper.Map<List<Record>, List<RecordDTO>>(_service.Get()));
         }
 
         [HttpGet]
@@ -66,11 +37,11 @@ namespace Itequia.Toggl.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]Record record)
+        public IActionResult Post([FromBody]RecordDTO record)
         {            
             try
             {
-                return new OkObjectResult(_service.Post(record));
+                return new OkObjectResult(_service.Post(Mapper.Map<RecordDTO, Record>(record)));
             }
             catch (Exception e)
             {
@@ -79,11 +50,11 @@ namespace Itequia.Toggl.Api.Controllers
         }
 
         [HttpPut]
-        public IActionResult Put(int id, Record record)
+        public IActionResult Put(int id, RecordDTO record)
         {
             try
             {
-                _service.Put(id, record);
+                _service.Put(id, Mapper.Map<RecordDTO, Record>(record));
                 return new OkResult();
             }
             catch (Exception e)
@@ -93,11 +64,11 @@ namespace Itequia.Toggl.Api.Controllers
         }
 
         [HttpPatch]
-        public IActionResult Patch(int id, Record record)
+        public IActionResult Patch(int id, RecordDTO record)
         {
             try
             {
-                _service.Patch(id, record);
+                _service.Patch(id, Mapper.Map<RecordDTO, Record>(record));
                 return new OkResult();
             }
             catch (Exception e)
