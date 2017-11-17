@@ -7,11 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using Itequia.Toggl.Api.Services;
 using Itequia.Toggl.Api.Services.Interfaces;
 using Itequia.Toggl.Api.Data.Models;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace Itequia.Toggl.Api.Controllers
 {
     [Produces("application/json")]
-    [Route("api/records")]
+    [Route("/api/records")]
     public class RecordsController : Controller
     {
         private readonly IRecordsService _service;
@@ -48,7 +49,7 @@ namespace Itequia.Toggl.Api.Controllers
         }
 
         [HttpPut]
-        public IActionResult Put(int id, Record record)
+        public IActionResult Put(int id, [FromBody]Record record)
         {
             try
             {
@@ -62,11 +63,24 @@ namespace Itequia.Toggl.Api.Controllers
         }
 
         [HttpPatch]
-        public IActionResult Patch(int id, Record record)
+        [Route("{id}")]
+        public IActionResult Patch(int id, [FromBody]JsonPatchDocument<Record> patch)
         {
             try
             {
+                Record record = _service.Get(id);
+                //Record patched = new Record
+                //{
+                //    Id = record.Id,
+                //    Start = record.Start,
+                //    End = record.End,
+                //    Description = record.Description,
+                //    UserId = record.UserId,
+                //    ProjectId = record.ProjectId    
+                //};
+                patch.ApplyTo(record);
                 _service.Patch(id, record);
+                //_service.Patch(id, record);
                 return new OkResult();
             }
             catch (Exception e)
@@ -76,6 +90,7 @@ namespace Itequia.Toggl.Api.Controllers
         }
 
         [HttpDelete]
+        [Route("{id}")]
         public IActionResult Delete(int id)
         {
             try

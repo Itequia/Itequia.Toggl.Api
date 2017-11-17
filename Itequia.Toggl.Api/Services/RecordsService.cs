@@ -34,6 +34,7 @@ namespace Itequia.Toggl.Api.Services
 
         public Record Post(Record record)
         {
+            if (record.Id != 0) throw new Exception("Can't create record with explicit id"); 
             _baseRepository.Create(record);
             return record;            
         }

@@ -43,6 +43,8 @@ namespace Itequia.Toggl.Api.Data.Repositories
             _db.SaveChanges();
         }
 
+
+
         public IQueryable<T> GetAll()
         {
 
