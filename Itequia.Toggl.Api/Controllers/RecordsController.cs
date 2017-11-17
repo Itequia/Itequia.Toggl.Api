@@ -13,7 +13,7 @@ using AutoMapper;
 namespace Itequia.Toggl.Api.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Records")]
+    [Route("api/records")]
     public class RecordsController : Controller
     {
         private readonly IRecordsService _service;
@@ -58,8 +58,15 @@ namespace Itequia.Toggl.Api.Controllers
             return new OkObjectResult(result);
         }
 
+        [HttpGet]
+        [Route("{id}")]
+        public IActionResult Get(int id)
+        {
+            return new OkObjectResult(_service.Get(id));
+        }
+
         [HttpPost]
-        public IActionResult Post(Record record)
+        public IActionResult Post([FromBody]Record record)
         {            
             try
             {
@@ -76,7 +83,8 @@ namespace Itequia.Toggl.Api.Controllers
         {
             try
             {
-                return new OkObjectResult(_service.Put(id, record));
+                _service.Put(id, record);
+                return new OkResult();
             }
             catch (Exception e)
             {
@@ -87,7 +95,15 @@ namespace Itequia.Toggl.Api.Controllers
         [HttpPatch]
         public IActionResult Patch(int id, Record record)
         {
-            return new OkObjectResult(_service.Patch(id, record));
+            try
+            {
+                _service.Patch(id, record);
+                return new OkResult();
+            }
+            catch (Exception e)
+            {
+                return new BadRequestObjectResult(e.Message);
+            }
         }
 
         [HttpDelete]
@@ -95,7 +111,8 @@ namespace Itequia.Toggl.Api.Controllers
         {
             try
             {
-                return new OkObjectResult(_service.Delete(id));
+                _service.Delete(id);
+                return new OkResult();
             }
             catch (Exception e)
             {
