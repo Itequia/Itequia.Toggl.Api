@@ -9,5 +9,10 @@ namespace Itequia.Toggl.Api.Services.Interfaces
     public interface IRecordsService
     {
         List<Record> Get();
+        Record Get(int id);
+        int Delete(int id);
+        Record Post(Record record);
+        Record Put(int id, Record record);
+        int Patch(int id, Record record);
     }
 }

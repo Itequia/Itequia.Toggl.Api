@@ -15,6 +15,7 @@ namespace Itequia.Toggl.Api.Controllers
     {
         private readonly IProjectsService _service;
 
+
         public ProjectsController(IProjectsService service)
         {
             _service = service;
