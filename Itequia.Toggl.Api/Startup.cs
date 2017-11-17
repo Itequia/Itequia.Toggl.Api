@@ -12,6 +12,8 @@ using Itequia.Toggl.Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Itequia.Toggl.Api.Services.Interfaces;
 using Itequia.Toggl.Api.Services;
+using Itequia.Toggl.Api.Data.Repositories.Interfaces;
+using Itequia.Toggl.Api.Data.Repositories;
 
 namespace Itequia.Toggl.Api
 {
@@ -30,6 +32,7 @@ namespace Itequia.Toggl.Api
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddScoped<IProjectsService, ProjectsService>();
             services.AddScoped<IRecordsService, RecordsService>();
 

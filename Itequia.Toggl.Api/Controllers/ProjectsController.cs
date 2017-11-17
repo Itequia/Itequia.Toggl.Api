@@ -10,7 +10,8 @@ using Itequia.Toggl.Api.Services.Interfaces;
 namespace Itequia.Toggl.Api.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Projects")]
+    [Route("/api/projects")]
+
     public class ProjectsController : Controller
     {
         private readonly IProjectsService _service;

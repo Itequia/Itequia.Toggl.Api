@@ -16,6 +16,7 @@ namespace Itequia.Toggl.Api.Services
         {
             _baseRepository = repository;
         }
+
         public List<Record> Get()
         {
             return _baseRepository.GetAll().ToList();    
@@ -26,10 +27,9 @@ namespace Itequia.Toggl.Api.Services
             return _baseRepository.Get(id);  
         }
 
-        public int Delete(int id)
+        public void Delete(int id)
         {            
-             _baseRepository.Delete(id);
-             return id;             
+             _baseRepository.Delete(id);         
         }
 
         public Record Post(Record record)
@@ -38,16 +38,14 @@ namespace Itequia.Toggl.Api.Services
             return record;            
         }
 
-        public Record Put(int id, Record record)
+        public void Put(int id, Record record)
         { 
-            _baseRepository.Update(record);
-            return record;
+            _baseRepository.Update(record);            
         }
 
-        public int Patch(int id, Record record)
+        public void Patch(int id, Record record)
         {
-            _baseRepository.Update(record);
-            return id;
+            _baseRepository.Update(record);            
         }
 
     }
