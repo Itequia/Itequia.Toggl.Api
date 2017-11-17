@@ -12,6 +12,9 @@ using Itequia.Toggl.Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Itequia.Toggl.Api.Services.Interfaces;
 using Itequia.Toggl.Api.Services;
+using AutoMapper;
+using Itequia.Toggl.Api.Data.Models;
+using Itequia.Toggl.Api.Data.DTO;
 
 namespace Itequia.Toggl.Api
 {
@@ -45,6 +48,12 @@ namespace Itequia.Toggl.Api
             }
 
             app.UseMvc();
+            InitializeAutoMapper();
+        }
+
+        private void InitializeAutoMapper()
+        {
+            Mapper.Initialize(cfg => cfg.CreateMap<Record, RecordDTO>());
         }
     }
 }
