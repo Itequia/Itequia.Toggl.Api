@@ -45,7 +45,8 @@ namespace Itequia.Toggl.Api.Controllers
         {
             try
             {
-                return new OkObjectResult(_service.Put(id, record));
+                _service.Put(id, record);
+                return new OkResult();
             }
             catch (Exception e)
             {
@@ -56,7 +57,15 @@ namespace Itequia.Toggl.Api.Controllers
         [HttpPatch]
         public IActionResult Patch(int id, Record record)
         {
-            return new OkObjectResult(_service.Patch(id, record));
+            try
+            {
+                _service.Patch(id, record);
+                return new OkResult();
+            }
+            catch (Exception e)
+            {
+                return new BadRequestObjectResult(e.Message);
+            }
         }
 
         [HttpDelete]
@@ -64,7 +73,8 @@ namespace Itequia.Toggl.Api.Controllers
         {
             try
             {
-                return new OkObjectResult(_service.Delete(id));
+                _service.Delete(id);
+                return new OkResult();
             }
             catch (Exception e)
             {
