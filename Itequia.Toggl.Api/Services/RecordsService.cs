@@ -17,9 +17,28 @@ namespace Itequia.Toggl.Api.Services
             _baseRepository = repository;
         }
 
-        public List<Record> Get()
+        public List<Record> Get(string description = null, DateTime? end = null, DateTime? start = null, string projectName = null, string sort = null)
         {
-            return _baseRepository.GetAll().ToList();    
+            IQueryable<Record> result = _baseRepository.GetAll();
+            if (!String.IsNullOrEmpty(description))
+            {
+                result = result.Where(r => r.Description.Contains(description));
+            }
+            if(end.HasValue)
+            {
+                result = result.Where(r => r.End.Value.Date == end.Value.Date);
+            }
+            if (start.HasValue)
+            {
+                result = result.Where(r => r.Start.Date == start.Value.Date);
+            }
+            if (!String.IsNullOrEmpty(projectName))
+            {
+                result = result.Where(r => r.Project.Name.Contains(projectName));
+            }
+            
+            //TODO sort
+            return result.ToList();    
         }
 
         public Record Get(int id)
@@ -46,7 +65,7 @@ namespace Itequia.Toggl.Api.Services
 
         public void Patch(int id, Record record)
         {
-            _baseRepository.Update(record);            
+            _baseRepository.Patch(id, record);            
         }
 
     }

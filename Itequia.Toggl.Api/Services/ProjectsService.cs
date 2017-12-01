@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Itequia.Toggl.Api.Data.Models;
 using Itequia.Toggl.Api.Data.Repositories.Interfaces;
+using Itequia.Toggl.Api.Data.Enums;
 
 namespace Itequia.Toggl.Api.Services
 {
@@ -19,7 +20,7 @@ namespace Itequia.Toggl.Api.Services
 
         public List<Project> Get()
         {
-            return _baseRepository.GetAll().ToList();
+            return _baseRepository.GetAll().Where(p => p.Status == Status.Active).ToList();
         }       
     }
 }
