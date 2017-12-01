@@ -46,9 +46,6 @@ namespace Itequia.Toggl.Api
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            // Configure Identity to use the same JWT claims as OpenIddict instead
-            // of the legacy WS-Federation claims it uses by default (ClaimTypes),
-            // which saves you from doing the mapping in your authorization controller.
             services.Configure<IdentityOptions>(options =>
             {
                 options.ClaimsIdentity.UserNameClaimType = OpenIdConnectConstants.Claims.Name;
@@ -69,28 +66,12 @@ namespace Itequia.Toggl.Api
                     .AddOAuthValidation();
         }
 
-        //// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        //public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        //{
-        //    app.UseAuthentication();
-
-        //    if (env.IsDevelopment())
-        //    {
-        //        app.UseDeveloperExceptionPage();
-        //    }
-
-        //    app.UseMvc();
-        //}
-
         public void Configure(IApplicationBuilder app)
         {
             app.UseDeveloperExceptionPage();
-
             app.UseAuthentication();
-
             app.UseMvcWithDefaultRoute();
-
-            app.UseWelcomePage();
+            app.UseWelcomePage();   
         }
     }
 }
