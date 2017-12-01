@@ -12,6 +12,9 @@ using Itequia.Toggl.Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Itequia.Toggl.Api.Services.Interfaces;
 using Itequia.Toggl.Api.Services;
+using Microsoft.AspNetCore.Identity;
+using Itequia.Toggl.Api.Data.Models;
+using AspNet.Security.OpenIdConnect.Primitives;
 
 namespace Itequia.Toggl.Api
 {
@@ -28,22 +31,30 @@ namespace Itequia.Toggl.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                {
-                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-                    options.UseOpenIddict();
-                });
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                options.UseOpenIddict();
+            });
+
 
             services.AddScoped<IProjectsService, ProjectsService>();
             services.AddScoped<IRecordsService, RecordsService>();
 
             services.AddMvc();
 
-            //services.AddIdentity<ApplicationUser, IdentityRole>()
-            //    .AddEntityFrameworkStores<ApplicationDbContext>()
-            //    .AddDefaultTokenProviders();
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
-            services.AddAuthentication()
-                    .AddOAuthValidation();
+            // Configure Identity to use the same JWT claims as OpenIddict instead
+            // of the legacy WS-Federation claims it uses by default (ClaimTypes),
+            // which saves you from doing the mapping in your authorization controller.
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.ClaimsIdentity.UserNameClaimType = OpenIdConnectConstants.Claims.Name;
+                options.ClaimsIdentity.UserIdClaimType = OpenIdConnectConstants.Claims.Subject;
+                options.ClaimsIdentity.RoleClaimType = OpenIdConnectConstants.Claims.Role;
+            });
 
             services.AddOpenIddict(options =>
             {
@@ -53,22 +64,33 @@ namespace Itequia.Toggl.Api
                 options.AllowPasswordFlow();
                 options.DisableHttpsRequirement();
             });
-            //TO CONTINUE
-            //https://github.com/openiddict/openiddict-core
-            //https://github.com/openiddict/openiddict-samples/blob/dev/samples/CodeFlow/AuthorizationServer/Startup.cs
+
+            services.AddAuthentication()
+                    .AddOAuthValidation();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        //// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        //public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        //{
+        //    app.UseAuthentication();
+
+        //    if (env.IsDevelopment())
+        //    {
+        //        app.UseDeveloperExceptionPage();
+        //    }
+
+        //    app.UseMvc();
+        //}
+
+        public void Configure(IApplicationBuilder app)
         {
+            app.UseDeveloperExceptionPage();
+
             app.UseAuthentication();
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            app.UseMvcWithDefaultRoute();
 
-            app.UseMvc();
+            app.UseWelcomePage();
         }
     }
 }

@@ -15,4 +15,3 @@ namespace Itequia.Toggl.Api.Services
         }
     }
 }
-s
