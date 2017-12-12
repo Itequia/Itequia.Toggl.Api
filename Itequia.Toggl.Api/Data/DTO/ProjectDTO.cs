@@ -4,13 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Itequia.Toggl.Api.Data.Models
+namespace Itequia.Toggl.Api.Data.DTO
 {
-    public class Project : BaseModel
+    public class ProjectDTO
     {
         public string Name { get; set; }
         public Status Status { get; set; }
     }
-
-    
 }

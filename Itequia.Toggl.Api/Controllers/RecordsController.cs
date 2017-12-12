@@ -9,11 +9,12 @@ using Itequia.Toggl.Api.Services.Interfaces;
 using Itequia.Toggl.Api.Data.Models;
 using Itequia.Toggl.Api.Data.DTO;
 using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace Itequia.Toggl.Api.Controllers
 {
     [Produces("application/json")]
-    [Route("api/records")]
+    [Route("/api/records")]
     public class RecordsController : Controller
     {
         private readonly IRecordsService _service;
@@ -24,9 +25,9 @@ namespace Itequia.Toggl.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get(string description = null, DateTime? end = null, DateTime? start = null, string projectName = null, string sort) 
         {
-            return new OkObjectResult(Mapper.Map<List<Record>, List<RecordDTO>>(_service.Get()));
+            return new OkObjectResult(Mapper.Map<List<Record>, List<RecordDTO>>(_service.Get(description, end, start, projectName, sort)));
         }
 
         [HttpGet]
@@ -41,7 +42,7 @@ namespace Itequia.Toggl.Api.Controllers
         {            
             try
             {
-                return new OkObjectResult(_service.Post(Mapper.Map<RecordDTO, Record>(record)));
+                return new OkObjectResult(Mapper.Map<Record, RecordDTO>(_service.Post(Mapper.Map<RecordDTO, Record>(record))));
             }
             catch (Exception e)
             {
@@ -49,8 +50,9 @@ namespace Itequia.Toggl.Api.Controllers
             }
         }
 
+        [Route("{id}")]
         [HttpPut]
-        public IActionResult Put(int id, RecordDTO record)
+        public IActionResult Put(int id, [FromBody]RecordDTO record)
         {
             try
             {
@@ -64,7 +66,8 @@ namespace Itequia.Toggl.Api.Controllers
         }
 
         [HttpPatch]
-        public IActionResult Patch(int id, RecordDTO record)
+        [Route("{id}")]
+        public IActionResult Patch(int id, [FromBody]RecordDTO record)
         {
             try
             {
@@ -78,6 +81,7 @@ namespace Itequia.Toggl.Api.Controllers
         }
 
         [HttpDelete]
+        [Route("{id}")]
         public IActionResult Delete(int id)
         {
             try
