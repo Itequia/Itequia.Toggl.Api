@@ -13,6 +13,9 @@ using Itequia.Toggl.Api.Data.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Itequia.Toggl.Api.Data.Models;
 using AspNet.Security.OpenIdConnect.Primitives;
+using System.Linq;
+using System;
+using Microsoft.Extensions.Logging;
 
 namespace Itequia.Toggl.Api
 {
@@ -82,16 +85,6 @@ namespace Itequia.Toggl.Api
             //app.UseMvcWithDefaultRoute();
             app.UseMvc();
             app.UseWelcomePage();
-
-            InitializeDatabase(app);
-        }
-
-        private void InitializeDatabase(IApplicationBuilder app)
-        {
-            using (var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
-            {
-                scope.ServiceProvider.GetRequiredService<ApplicationDbContext>().Database.Migrate();
-            }
-        }
+        }      
     }
 }
