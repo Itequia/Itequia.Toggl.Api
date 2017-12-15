@@ -12,9 +12,10 @@ using System;
 namespace Itequia.Toggl.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171201151854_ChangeDbContextType")]
+    partial class ChangeDbContextType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -91,8 +92,6 @@ namespace Itequia.Toggl.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("ApplicationUserId");
-
                     b.Property<string>("Description");
 
                     b.Property<DateTime?>("End");
@@ -102,8 +101,6 @@ namespace Itequia.Toggl.Api.Migrations
                     b.Property<DateTime>("Start");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("ProjectId");
 
@@ -337,10 +334,6 @@ namespace Itequia.Toggl.Api.Migrations
 
             modelBuilder.Entity("Itequia.Toggl.Api.Data.Models.Record", b =>
                 {
-                    b.HasOne("Itequia.Toggl.Api.Data.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId");
-
                     b.HasOne("Itequia.Toggl.Api.Data.Models.Project", "Project")
                         .WithMany()
                         .HasForeignKey("ProjectId")

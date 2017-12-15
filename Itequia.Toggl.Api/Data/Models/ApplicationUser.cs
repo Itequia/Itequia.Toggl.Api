@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Itequia.Toggl.Api.Data.Models
 {
-    public class User : BaseModel
+    public class ApplicationUser : IdentityUser
     {
-        public string UserName { get; set; }
     }
 }

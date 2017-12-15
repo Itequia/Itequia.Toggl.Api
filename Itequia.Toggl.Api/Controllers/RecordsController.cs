@@ -25,7 +25,7 @@ namespace Itequia.Toggl.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get(string description = null, DateTime? end = null, DateTime? start = null, string projectName = null, string sort) 
+        public IActionResult Get(string description = null, DateTime? end = null, DateTime? start = null, string projectName = null, string sort = null) 
         {
             return new OkObjectResult(Mapper.Map<List<Record>, List<RecordDTO>>(_service.Get(description, end, start, projectName, sort)));
         }
