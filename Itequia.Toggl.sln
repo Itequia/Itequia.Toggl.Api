@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.27004.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Itequia.Toggl.Api", "Itequia.Toggl.Api\Itequia.Toggl.Api.csproj", "{9FBE9608-788C-4B62-A0B2-50ABC4B0C5FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Itequia.Toggl.Api", "Itequia.Toggl.Api\Itequia.Toggl.Api.csproj", "{9FBE9608-788C-4B62-A0B2-50ABC4B0C5FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Itequia.Toggl.Tests", "Itequia.Toggl.Tests\Itequia.Toggl.Tests.csproj", "{B22DAF5E-E45A-4093-8E60-FEE0E3AE2EDF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{9FBE9608-788C-4B62-A0B2-50ABC4B0C5FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FBE9608-788C-4B62-A0B2-50ABC4B0C5FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9FBE9608-788C-4B62-A0B2-50ABC4B0C5FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B22DAF5E-E45A-4093-8E60-FEE0E3AE2EDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B22DAF5E-E45A-4093-8E60-FEE0E3AE2EDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B22DAF5E-E45A-4093-8E60-FEE0E3AE2EDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B22DAF5E-E45A-4093-8E60-FEE0E3AE2EDF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
