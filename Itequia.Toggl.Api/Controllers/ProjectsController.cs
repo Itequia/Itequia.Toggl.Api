@@ -6,14 +6,19 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Itequia.Toggl.Api.Services;
 using Itequia.Toggl.Api.Services.Interfaces;
+using AutoMapper;
+using Itequia.Toggl.Api.Data.Models;
+using Itequia.Toggl.Api.Data.DTO;
 
 namespace Itequia.Toggl.Api.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Projects")]
+    [Route("/api/projects")]
+
     public class ProjectsController : Controller
     {
         private readonly IProjectsService _service;
+
 
         public ProjectsController(IProjectsService service)
         {
@@ -23,7 +28,8 @@ namespace Itequia.Toggl.Api.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return new OkObjectResult(_service.Get());
+
+            return new OkObjectResult(Mapper.Map<List<Project>, List<ProjectDTO>>(_service.Get()));
         }
     }
 }

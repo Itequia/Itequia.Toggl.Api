@@ -5,6 +5,11 @@ using Itequia.Toggl.Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Itequia.Toggl.Api.Services.Interfaces;
 using Itequia.Toggl.Api.Services;
+using AutoMapper;
+using Itequia.Toggl.Api.Data.Models;
+using Itequia.Toggl.Api.Data.DTO;
+using Itequia.Toggl.Api.Data.Repositories.Interfaces;
+using Itequia.Toggl.Api.Data.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Itequia.Toggl.Api.Data.Models;
 using AspNet.Security.OpenIdConnect.Primitives;
@@ -29,7 +34,7 @@ namespace Itequia.Toggl.Api
                 options.UseOpenIddict();
             });
 
-
+            services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddScoped<IProjectsService, ProjectsService>();
             services.AddScoped<IRecordsService, RecordsService>();
 
@@ -58,6 +63,19 @@ namespace Itequia.Toggl.Api
             services.AddAuthentication()
                     .AddOAuthValidation();
         }
+
+            app.UseMvc();
+            InitializeAutoMapper();
+        }
+
+    private void InitializeAutoMapper()
+    {
+        Mapper.Initialize(cfg => {
+            cfg.CreateMap<Record, RecordDTO>().ReverseMap();
+            cfg.CreateMap<Project, ProjectDTO>();
+        }
+                         );
+    }
 
         public void Configure(IApplicationBuilder app)
         {
