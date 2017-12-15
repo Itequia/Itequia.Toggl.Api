@@ -11,11 +11,7 @@ using Itequia.Toggl.Api.Data.DTO;
 using Itequia.Toggl.Api.Data.Repositories.Interfaces;
 using Itequia.Toggl.Api.Data.Repositories;
 using Microsoft.AspNetCore.Identity;
-using Itequia.Toggl.Api.Data.Models;
 using AspNet.Security.OpenIdConnect.Primitives;
-using System.Linq;
-using System;
-using Microsoft.Extensions.Logging;
 
 namespace Itequia.Toggl.Api
 {
@@ -64,7 +60,7 @@ namespace Itequia.Toggl.Api
             });
 
             services.AddAuthentication()
-                    .AddOAuthValidation();
+                    .AddOAuthValidation();       
 
             InitializeAutoMapper();
         }
@@ -82,8 +78,10 @@ namespace Itequia.Toggl.Api
         {
             app.UseDeveloperExceptionPage();
             app.UseAuthentication();
-            //app.UseMvcWithDefaultRoute();
-            app.UseMvc();
+
+            app.UseAuthentication();
+
+            app.UseMvcWithDefaultRoute();
             app.UseWelcomePage();
         }      
     }
