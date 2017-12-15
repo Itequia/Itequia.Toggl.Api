@@ -82,7 +82,16 @@ namespace Itequia.Toggl.Api
             //app.UseMvcWithDefaultRoute();
             app.UseMvc();
             app.UseWelcomePage();
+
+            InitializeDatabase(app);
         }
 
+        private void InitializeDatabase(IApplicationBuilder app)
+        {
+            using (var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                scope.ServiceProvider.GetRequiredService<ApplicationDbContext>().Database.Migrate();
+            }
+        }
     }
 }
