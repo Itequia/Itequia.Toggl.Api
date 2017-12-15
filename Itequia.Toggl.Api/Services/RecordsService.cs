@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Itequia.Toggl.Api.Data.Models;
 using Itequia.Toggl.Api.Data.Repositories.Interfaces;
+using Itequia.Toggl.Api.Extensions;
 
 namespace Itequia.Toggl.Api.Services
 {
@@ -22,6 +23,7 @@ namespace Itequia.Toggl.Api.Services
             IQueryable<Record> result = _baseRepository.GetAll();
             if (!String.IsNullOrEmpty(description))
             {
+                
                 result = result.Where(r => r.Description.Contains(description));
             }
             if(end.HasValue)
@@ -36,8 +38,11 @@ namespace Itequia.Toggl.Api.Services
             {
                 result = result.Where(r => r.Project.Name.Contains(projectName));
             }
-            
-            //TODO sort
+            if (sort != null)
+            {
+                result.ApplySort<Record>(sort);
+            }
+
             return result.ToList();    
         }
 
