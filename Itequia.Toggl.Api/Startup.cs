@@ -62,27 +62,27 @@ namespace Itequia.Toggl.Api
 
             services.AddAuthentication()
                     .AddOAuthValidation();
-        }
 
-            app.UseMvc();
             InitializeAutoMapper();
         }
 
-    private void InitializeAutoMapper()
-    {
-        Mapper.Initialize(cfg => {
-            cfg.CreateMap<Record, RecordDTO>().ReverseMap();
-            cfg.CreateMap<Project, ProjectDTO>();
+        private void InitializeAutoMapper()
+        {
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<Record, RecordDTO>().ReverseMap();
+                cfg.CreateMap<Project, ProjectDTO>();
+            });
         }
-                         );
-    }
 
         public void Configure(IApplicationBuilder app)
         {
             app.UseDeveloperExceptionPage();
             app.UseAuthentication();
-            app.UseMvcWithDefaultRoute();
-            app.UseWelcomePage();   
+            //app.UseMvcWithDefaultRoute();
+            app.UseMvc();
+            app.UseWelcomePage();
         }
+
     }
 }
