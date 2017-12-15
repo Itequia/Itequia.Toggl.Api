@@ -1,4 +1,5 @@
-﻿using Itequia.Toggl.Api.Data.Models;
+﻿using Itequia.Toggl.Api.Data.Enums;
+using Itequia.Toggl.Api.Data.Models;
 using Itequia.Toggl.Api.Data.Repositories.Interfaces;
 using Itequia.Toggl.Api.Services;
 using Itequia.Toggl.Api.Services.Interfaces;

@@ -4,6 +4,7 @@ using Itequia.Toggl.Api.Data.Repositories.Interfaces;
 using Itequia.Toggl.Api.Data.Models;
 using System.Linq;
 using System.Collections.Generic;
+using Itequia.Toggl.Api.Data.Enums;
 
 namespace Itequia.Toggl.Tests
 {
