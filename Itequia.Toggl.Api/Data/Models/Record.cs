@@ -14,7 +14,8 @@ namespace Itequia.Toggl.Api.Data.Models
         public int ProjectId { get; set; }
         public virtual Project Project { get; set; }
 
-        public int UserId { get; set; }
-        public virtual User User { get; set; }
+        public string ApplicationUserId { get; set; }
+        public virtual ApplicationUser ApplicationUser { get; set; }
+
     }
 }
