@@ -10,39 +10,57 @@ using Itequia.Toggl.Api.Data.Models;
 using Itequia.Toggl.Api.Data.DTO;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Authorization;
+using AspNet.Security.OAuth.Validation;
+using Microsoft.AspNetCore.Identity;
 
 namespace Itequia.Toggl.Api.Controllers
 {
     [Produces("application/json")]
     [Route("/api/records")]
+    [Authorize(AuthenticationSchemes = OAuthValidationDefaults.AuthenticationScheme)]
     public class RecordsController : Controller
     {
         private readonly IRecordsService _service;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public RecordsController(IRecordsService service)
+        public RecordsController(IRecordsService service, UserManager<ApplicationUser> userManager)
         {
             _service = service;
+            _userManager = userManager;
         }
 
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
+
         [HttpGet]
-        public IActionResult Get(string description = null, DateTime? end = null, DateTime? start = null, string projectName = null, string sort = null) 
+        public async Task<IActionResult> Get(string description = null, DateTime? end = null, DateTime? start = null, string projectName = null, string sort = null)
         {
-            return new OkObjectResult(Mapper.Map<List<Record>, List<RecordDTO>>(_service.Get(description, end, start, projectName, sort)));
+            var user = await GetCurrentUserAsync();
+            return new OkObjectResult(Mapper.Map<List<Record>, List<RecordDTO>>(_service.Get(user.Id, description, end, start, projectName, sort)));
         }
 
         [HttpGet]
         [Route("{id}")]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            return new OkObjectResult(_service.Get(id));
+            try
+            {
+                var user = await GetCurrentUserAsync();
+                return new OkObjectResult(_service.Get(user.Id, id));
+            }
+            catch (Exception e)
+            {
+                return new BadRequestObjectResult(e.Message);
+            }
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]RecordDTO record)
+        public async Task<IActionResult> Post([FromBody]RecordDTO record)
         {            
             try
             {
-                return new OkObjectResult(Mapper.Map<Record, RecordDTO>(_service.Post(Mapper.Map<RecordDTO, Record>(record))));
+                var user = await GetCurrentUserAsync();
+                return new OkObjectResult(Mapper.Map<Record, RecordDTO>(_service.Post(user.Id, Mapper.Map<RecordDTO, Record>(record))));
             }
             catch (Exception e)
             {
@@ -52,11 +70,12 @@ namespace Itequia.Toggl.Api.Controllers
 
         [Route("{id}")]
         [HttpPut]
-        public IActionResult Put(int id, [FromBody]RecordDTO record)
+        public async Task<IActionResult> Put(int id, [FromBody]RecordDTO record)
         {
             try
             {
-                _service.Put(id, Mapper.Map<RecordDTO, Record>(record));
+                var user = await GetCurrentUserAsync();
+                _service.Put(user.Id, id, Mapper.Map<RecordDTO, Record>(record));
                 return new OkResult();
             }
             catch (Exception e)
@@ -67,11 +86,12 @@ namespace Itequia.Toggl.Api.Controllers
 
         [HttpPatch]
         [Route("{id}")]
-        public IActionResult Patch(int id, [FromBody]RecordDTO record)
+        public async Task<IActionResult> Patch(int id, [FromBody]RecordDTO record)
         {
             try
             {
-                _service.Patch(id, Mapper.Map<RecordDTO, Record>(record));
+                var user = await GetCurrentUserAsync();
+                _service.Patch(user.Id, id, Mapper.Map<RecordDTO, Record>(record));
                 return new OkResult();
             }
             catch (Exception e)
@@ -82,11 +102,12 @@ namespace Itequia.Toggl.Api.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                _service.Delete(id);
+                var user = await GetCurrentUserAsync();
+                _service.Delete(user.Id, id);
                 return new OkResult();
             }
             catch (Exception e)

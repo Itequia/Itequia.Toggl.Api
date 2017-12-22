@@ -8,7 +8,7 @@ namespace Itequia.Toggl.Api.Data.DTO
 {
     public class ProjectDTO
     {
+        public int Id { get; set; }
         public string Name { get; set; }
-        public Status Status { get; set; }
     }
 }

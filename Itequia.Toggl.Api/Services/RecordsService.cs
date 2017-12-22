@@ -18,12 +18,11 @@ namespace Itequia.Toggl.Api.Services
             _baseRepository = repository;
         }
 
-        public List<Record> Get(string description = null, DateTime? end = null, DateTime? start = null, string projectName = null, string sort = null)
+        public List<Record> Get(string userId, string description = null, DateTime? end = null, DateTime? start = null, string projectName = null, string sort = null)
         {
-            IQueryable<Record> result = _baseRepository.GetAll();
-            if (!String.IsNullOrEmpty(description))
-            {
-                
+            IQueryable<Record> result = _baseRepository.GetAll().Where(r => r.ApplicationUserId == userId);
+            if (!string.IsNullOrEmpty(description))
+            {                
                 result = result.Where(r => r.Description.Contains(description));
             }
             if(end.HasValue)
@@ -34,7 +33,7 @@ namespace Itequia.Toggl.Api.Services
             {
                 result = result.Where(r => r.Start.Date == start.Value.Date);
             }
-            if (!String.IsNullOrEmpty(projectName))
+            if (!string.IsNullOrEmpty(projectName))
             {
                 result = result.Where(r => r.Project.Name.Contains(projectName));
             }
@@ -46,30 +45,60 @@ namespace Itequia.Toggl.Api.Services
             return result.ToList();    
         }
 
-        public Record Get(int id)
+        public Record Get(string userId, int id)
         {
-            return _baseRepository.Get(id);  
+            Record record = _baseRepository.Get(id);
+            if (record.ApplicationUserId != userId)
+                throw new Exception("Requested record doesn't belong to logged user.");
+
+            return record;
         }
 
-        public void Delete(int id)
-        {            
-             _baseRepository.Delete(id);         
+        public void Delete(string userId, int id)
+        {
+            Record record = _baseRepository.Get(id);
+            if (record == null)
+                throw new Exception("Record not found");
+            if (record.ApplicationUserId != userId)
+                throw new Exception("Requested record doesn't belong to logged user.");
+
+            _baseRepository.Delete(id);         
         }
 
-        public Record Post(Record record)
+        public Record Post(string userId, Record record)
         {
-            if (record.Id != 0) throw new Exception("Can't create record with explicit id"); 
+            if (record.Id != 0)
+                throw new Exception("Can't create record with explicit id");
+
+            record.ApplicationUserId = userId;
             _baseRepository.Create(record);
             return record;            
         }
 
-        public void Put(int id, Record record)
-        { 
-            _baseRepository.Update(record);            
+        public void Put(string userId, int id, Record record)
+        {
+            Record dbRecord = _baseRepository.Get(id);
+            if (dbRecord == null)
+                throw new Exception("Record not found");
+            if (dbRecord.ApplicationUserId != userId)
+                throw new Exception("Requested record doesn't belong to logged user.");
+
+            dbRecord.Description = record.Description;
+            dbRecord.Start = record.Start;
+            dbRecord.End = record.End;
+            dbRecord.ProjectId = record.ProjectId;
+
+            _baseRepository.Update(dbRecord);            
         }
 
-        public void Patch(int id, Record record)
+        public void Patch(string userId, int id, Record record)
         {
+            Record dbRecord = _baseRepository.Get(id);
+            if (dbRecord == null)
+                throw new Exception("Record not found");
+            if (dbRecord.ApplicationUserId != userId)
+                throw new Exception("Requested record doesn't belong to logged user.");
+
             _baseRepository.Patch(id, record);            
         }
 
